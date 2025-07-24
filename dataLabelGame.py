@@ -3,7 +3,7 @@ import pygame
 
 # pygame setup
 pygame.init()
-screen = pygame.display.set_mode((1280, 720))
+screen = pygame.display.set_mode((1280, 720), pygame.RESIZABLE)
 
 pygame.display.set_caption("Data Labeler")
 
@@ -33,18 +33,32 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == pygame.VIDEORESIZE:
+            scrWid, scrHei = screen.get_size()
+
 
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("light blue")
 
-    pygame.draw.rect(screen, "black", pygame.Rect( screen.get_width()//2 -375, 100, 750, 300), 3, 3)
+    scrWid, scrHei = screen.get_size()
 
+    #size of img to be labeled
+    imgHeight = (scrHei // 12) *5
+    imgWidth = (scrWid // 4) *3
+    imgPosHeight = scrHei // 6
+    imgPosWidth = (scrWid // 2) - (imgWidth // 2)
+    imgRect = pygame.Rect( imgPosWidth, imgPosHeight, imgWidth, imgHeight)
+    # imgRect.center = 
+    # x,y, wid, hei, thick, curve edge
+    pygame.draw.rect(screen, "black", imgRect , 3, 3)
+    # pygame.draw.rect(screen, "black", pygame.Rect( screen.get_width()//2 -375, 100, 750, 300), 3, 3)
+    
+    # pull images from a file path
     doggoImg = pygame.image.load("doggo.jpg")
     iwidth, iheight = doggoImg.get_size()
-    imgScale = 300 // iheight
-    doggoImg = pygame.transform.scale(doggoImg, (700, 250))
-
-    screen.blit(doggoImg, (screen.get_width()//2 -350 , 125))
+    # imgScale = 300 // iheight - TODO: FIX IMAGE DIM RATIO
+    doggoImg = pygame.transform.scale(doggoImg, (imgWidth-2, imgHeight-2))
+    screen.blit(doggoImg, (imgPosWidth +1 , imgPosHeight +1))
 
 
     # label options
