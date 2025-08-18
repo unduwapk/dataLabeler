@@ -54,7 +54,8 @@ while running:
     # pygame.draw.rect(screen, "black", pygame.Rect( screen.get_width()//2 -375, 100, 750, 300), 3, 3)
     
     # pull images from a file path
-    doggoImg = pygame.image.load("doggo.jpg")
+    imagePATH = "doggo.jpg"
+    doggoImg = pygame.image.load(imagePATH)
     iwidth, iheight = doggoImg.get_size()
     # imgScale = 300 // iheight - TODO: FIX IMAGE DIM RATIO
     doggoImg = pygame.transform.scale(doggoImg, (imgWidth-2, imgHeight-2))
@@ -77,6 +78,8 @@ while running:
     text_surface_cat = font.render("Cat", True, text_color)
     text_surface_other = font.render("Other", True, text_color)
 
+    text_surface_title = font.render(imagePATH, True, text_color)
+
     # Position and blit the text
     text_rect_dog = text_surface_dog.get_rect()
     text_rect_dog.center = (200 + ( scrWid//2 -375) // 2, labelYlevel+50)
@@ -90,7 +93,10 @@ while running:
     text_rect_other.center = (500 + ( scrWid//2 +175) // 2, labelYlevel+50)
     screen.blit(text_surface_other, text_rect_other)    
 
-
+    text_rect_title = text_surface_title.get_rect()
+    text_rect_title.centerx = imgRect.centerx
+    text_rect_title.bottom = imgRect.top - 10
+    screen.blit(text_surface_title, text_rect_title)
 
     # flip() the display to put your work on screen
     pygame.display.flip()
