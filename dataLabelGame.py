@@ -66,9 +66,12 @@ while running:
     labelH = (scrHei // 8)  
     labelW = (scrWid // 5)
     labelYlevel = (scrHei//6) *4
-    pygame.draw.rect(screen, "black", pygame.Rect( scrWid//2 -375, labelYlevel, labelW, labelH), 3, 3)
-    pygame.draw.rect(screen, "black", pygame.Rect( scrWid//2 -100, labelYlevel, labelW , labelH), 3, 3)
-    pygame.draw.rect(screen, "black", pygame.Rect( scrWid//2 +175, labelYlevel, labelW, labelH), 3, 3)
+    label1Rect = pygame.Rect( scrWid//2 -375, labelYlevel, labelW, labelH)
+    label2Rect = pygame.Rect( scrWid//2 -100, labelYlevel, labelW , labelH)
+    label3Rect = pygame.Rect( scrWid//2 +175, labelYlevel, labelW, labelH)
+    pygame.draw.rect(screen, "black", label1Rect, 3, 3)
+    pygame.draw.rect(screen, "black", label2Rect, 3, 3)
+    pygame.draw.rect(screen, "black", label3Rect, 3, 3)
 
 
     # Define and render the text
@@ -82,15 +85,21 @@ while running:
 
     # Position and blit the text
     text_rect_dog = text_surface_dog.get_rect()
-    text_rect_dog.center = (200 + ( scrWid//2 -375) // 2, labelYlevel+50)
+    text_rect_dog.centerx = label1Rect.centerx
+    text_rect_dog.centery = label1Rect.centery
+    # text_rect_dog.center = (200 + ( scrWid//2 -375) // 2, labelYlevel+50)
     screen.blit(text_surface_dog, text_rect_dog)
 
     text_rect_cat = text_surface_cat.get_rect()
-    text_rect_cat.center = (350 + ( scrWid//2 -100) // 2, labelYlevel+50)
+    text_rect_cat.centerx = label2Rect.centerx
+    text_rect_cat.centery = label2Rect.centery
+    # text_rect_cat.center = (350 + ( scrWid//2 -100) // 2, labelYlevel+50)
     screen.blit(text_surface_cat, text_rect_cat)
 
     text_rect_other = text_surface_other.get_rect()
-    text_rect_other.center = (500 + ( scrWid//2 +175) // 2, labelYlevel+50)
+    text_rect_other.centerx = label3Rect.centerx
+    text_rect_other.centery = label3Rect.centery
+    # text_rect_other.center = (500 + ( scrWid//2 +175) // 2, labelYlevel+50)
     screen.blit(text_surface_other, text_rect_other)    
 
     text_rect_title = text_surface_title.get_rect()
