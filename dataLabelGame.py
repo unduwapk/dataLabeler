@@ -110,10 +110,16 @@ while running:
 
     #arrows for switching images 
     # Arrowhead points (pointing right)
-    arrowhead_points = [(imgRect.right + 25, imgRect.centery-10), (imgRect.right + 75, imgRect.centery), (imgRect.right + 25, imgRect.centery+10)]
-    arrRightPt = pygame.draw.polygon(screen, "purple", arrowhead_points)
+    arrowhead_pointsR = [(imgRect.right + 25, imgRect.centery-10), (imgRect.right + 75, imgRect.centery), (imgRect.right + 25, imgRect.centery+10)]
+    arrRightPt = pygame.draw.polygon(screen, "purple", arrowhead_pointsR)
     # Arrow shaft (rectangle)
     arrRightBd = pygame.draw.rect(screen, "purple", (imgRect.right + 10, imgRect.centery-5, 15, 10)) # x, y, width, height
+
+    # Arrowhead points (pointing left)
+    arrowhead_pointsL = [(imgRect.left - 25, imgRect.centery-10), (imgRect.left - 75, imgRect.centery), (imgRect.left - 25, imgRect.centery+10)]
+    arrLeftPt = pygame.draw.polygon(screen, "purple", arrowhead_pointsL)
+    # Arrow shaft (rectangle)
+    arrLeftBd = pygame.draw.rect(screen, "purple", (arrLeftPt.right, imgRect.centery-5, 15, 10)) # x, y, width, height
 
 
     # flip() the display to put your work on screen
