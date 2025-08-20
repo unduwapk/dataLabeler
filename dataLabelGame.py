@@ -107,6 +107,15 @@ while running:
     text_rect_title.bottom = imgRect.top - 10
     screen.blit(text_surface_title, text_rect_title)
 
+
+    #arrows for switching images 
+    # Arrowhead points (pointing right)
+    arrowhead_points = [(imgRect.right + 25, imgRect.centery-10), (imgRect.right + 75, imgRect.centery), (imgRect.right + 25, imgRect.centery+10)]
+    arrRightPt = pygame.draw.polygon(screen, "purple", arrowhead_points)
+    # Arrow shaft (rectangle)
+    arrRightBd = pygame.draw.rect(screen, "purple", (imgRect.right + 10, imgRect.centery-5, 15, 10)) # x, y, width, height
+
+
     # flip() the display to put your work on screen
     pygame.display.flip()
 
