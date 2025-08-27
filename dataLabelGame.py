@@ -7,127 +7,129 @@ screen = pygame.display.set_mode((1280, 720), pygame.RESIZABLE)
 
 pygame.display.set_caption("Data Labeler")
 
-# def main():
-#     run=True
+def main():
+    run=True
 
-#     while run:
+    while run:
 #         for event in pygame.event.get():
 #             if event.type == pygame.QUIT:
 #                 run = False
 #                 break
-#     pygame.quit()
 
-# if __name__ == "__main__":
-#     main()
+        # poll for events
+        # pygame.QUIT event means the user clicked X to close your window
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            elif event.type == pygame.VIDEORESIZE:
+                scrWid, scrHei = screen.get_size()
 
 
+        # fill the screen with a color to wipe away anything from last frame
+        screen.fill("light blue")
+
+        scrWid, scrHei = screen.get_size()
+
+        #size of img to be labeled
+        imgHeight = (scrHei // 12) *5
+        imgWidth = (scrWid // 4) *3
+        imgPosHeight = scrHei // 6
+        imgPosWidth = (scrWid // 2) - (imgWidth // 2)
+        imgRect = pygame.Rect( imgPosWidth, imgPosHeight, imgWidth, imgHeight)
+        # imgRect.center = 
+        # x,y, wid, hei, thick, curve edge
+        pygame.draw.rect(screen, "black", imgRect , 3, 3)
+        # pygame.draw.rect(screen, "black", pygame.Rect( screen.get_width()//2 -375, 100, 750, 300), 3, 3)
+        
+        # pull images from a file path
+        imagePATH = "doggo.jpg"
+        doggoImg = pygame.image.load(imagePATH)
+        iwidth, iheight = doggoImg.get_size()
+        # imgScale = 300 // iheight - TODO: FIX IMAGE DIM RATIO
+        doggoImg = pygame.transform.scale(doggoImg, (imgWidth-2, imgHeight-2))
+        screen.blit(doggoImg, (imgPosWidth +1 , imgPosHeight +1))
+
+
+        # label options
+        labelH = (scrHei // 8)  
+        labelW = (scrWid // 5)
+        labelYlevel = (scrHei//6) *4
+        label1Rect = pygame.Rect( scrWid//2 -375, labelYlevel, labelW, labelH)
+        label2Rect = pygame.Rect( scrWid//2 -100, labelYlevel, labelW , labelH)
+        label3Rect = pygame.Rect( scrWid//2 +175, labelYlevel, labelW, labelH)
+        pygame.draw.rect(screen, "black", label1Rect, 3, 3)
+        pygame.draw.rect(screen, "black", label2Rect, 3, 3)
+        pygame.draw.rect(screen, "black", label3Rect, 3, 3)
+
+
+        # Define and render the text
+        font = pygame.font.SysFont("Comic Sans", 48,  bold=True)
+        text_color = (255, 255, 255)  # White
+        text_surface_dog = font.render("Dog", True, text_color)
+        text_surface_cat = font.render("Cat", True, text_color)
+        text_surface_other = font.render("Other", True, text_color)
+
+        text_surface_title = font.render(imagePATH, True, text_color)
+
+        # Position and blit the text
+        text_rect_dog = text_surface_dog.get_rect()
+        text_rect_dog.centerx = label1Rect.centerx
+        text_rect_dog.centery = label1Rect.centery
+        # text_rect_dog.center = (200 + ( scrWid//2 -375) // 2, labelYlevel+50)
+        screen.blit(text_surface_dog, text_rect_dog)
+
+        text_rect_cat = text_surface_cat.get_rect()
+        text_rect_cat.centerx = label2Rect.centerx
+        text_rect_cat.centery = label2Rect.centery
+        # text_rect_cat.center = (350 + ( scrWid//2 -100) // 2, labelYlevel+50)
+        screen.blit(text_surface_cat, text_rect_cat)
+
+        text_rect_other = text_surface_other.get_rect()
+        text_rect_other.centerx = label3Rect.centerx
+        text_rect_other.centery = label3Rect.centery
+        # text_rect_other.center = (500 + ( scrWid//2 +175) // 2, labelYlevel+50)
+        screen.blit(text_surface_other, text_rect_other)    
+
+        text_rect_title = text_surface_title.get_rect()
+        text_rect_title.centerx = imgRect.centerx
+        text_rect_title.bottom = imgRect.top - 10
+        screen.blit(text_surface_title, text_rect_title)
+
+
+        #arrows for switching images 
+        # Arrowhead points (pointing right)
+        arrowhead_pointsR = [(imgRect.right + 25, imgRect.centery-10), (imgRect.right + 75, imgRect.centery), (imgRect.right + 25, imgRect.centery+10)]
+        arrRightPt = pygame.draw.polygon(screen, "purple", arrowhead_pointsR)
+        # Arrow shaft (rectangle)
+        arrRightBd = pygame.draw.rect(screen, "purple", (arrRightPt.left - 15, imgRect.centery-5, 15, 10)) # x, y, width, height
+
+        # Arrowhead points (pointing left)
+        arrowhead_pointsL = [(imgRect.left - 25, imgRect.centery-10), (imgRect.left - 75, imgRect.centery), (imgRect.left - 25, imgRect.centery+10)]
+        arrLeftPt = pygame.draw.polygon(screen, "purple", arrowhead_pointsL)
+        # Arrow shaft (rectangle)
+        arrLeftBd = pygame.draw.rect(screen, "purple", (arrLeftPt.right, imgRect.centery-5, 15, 10)) # x, y, width, height
+
+
+        # flip() the display to put your work on screen
+        pygame.display.flip()
+
+        # limits FPS to 60
+        # dt is delta time in seconds since last frame, used for framerate-
+        # independent physics.
+        dt = clock.tick(60) / 1000
+
+    pygame.quit()
+
+if __name__ == "__main__":
+    main()
+
+##
 
 clock = pygame.time.Clock()
-running = True
+run = True
 dt = 0
 
 
-while running:
-    # poll for events
-    # pygame.QUIT event means the user clicked X to close your window
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        elif event.type == pygame.VIDEORESIZE:
-            scrWid, scrHei = screen.get_size()
-
-
-    # fill the screen with a color to wipe away anything from last frame
-    screen.fill("light blue")
-
-    scrWid, scrHei = screen.get_size()
-
-    #size of img to be labeled
-    imgHeight = (scrHei // 12) *5
-    imgWidth = (scrWid // 4) *3
-    imgPosHeight = scrHei // 6
-    imgPosWidth = (scrWid // 2) - (imgWidth // 2)
-    imgRect = pygame.Rect( imgPosWidth, imgPosHeight, imgWidth, imgHeight)
-    # imgRect.center = 
-    # x,y, wid, hei, thick, curve edge
-    pygame.draw.rect(screen, "black", imgRect , 3, 3)
-    # pygame.draw.rect(screen, "black", pygame.Rect( screen.get_width()//2 -375, 100, 750, 300), 3, 3)
+# while running:
     
-    # pull images from a file path
-    imagePATH = "doggo.jpg"
-    doggoImg = pygame.image.load(imagePATH)
-    iwidth, iheight = doggoImg.get_size()
-    # imgScale = 300 // iheight - TODO: FIX IMAGE DIM RATIO
-    doggoImg = pygame.transform.scale(doggoImg, (imgWidth-2, imgHeight-2))
-    screen.blit(doggoImg, (imgPosWidth +1 , imgPosHeight +1))
-
-
-    # label options
-    labelH = (scrHei // 8)  
-    labelW = (scrWid // 5)
-    labelYlevel = (scrHei//6) *4
-    label1Rect = pygame.Rect( scrWid//2 -375, labelYlevel, labelW, labelH)
-    label2Rect = pygame.Rect( scrWid//2 -100, labelYlevel, labelW , labelH)
-    label3Rect = pygame.Rect( scrWid//2 +175, labelYlevel, labelW, labelH)
-    pygame.draw.rect(screen, "black", label1Rect, 3, 3)
-    pygame.draw.rect(screen, "black", label2Rect, 3, 3)
-    pygame.draw.rect(screen, "black", label3Rect, 3, 3)
-
-
-    # Define and render the text
-    font = pygame.font.SysFont("Comic Sans", 48,  bold=True)
-    text_color = (255, 255, 255)  # White
-    text_surface_dog = font.render("Dog", True, text_color)
-    text_surface_cat = font.render("Cat", True, text_color)
-    text_surface_other = font.render("Other", True, text_color)
-
-    text_surface_title = font.render(imagePATH, True, text_color)
-
-    # Position and blit the text
-    text_rect_dog = text_surface_dog.get_rect()
-    text_rect_dog.centerx = label1Rect.centerx
-    text_rect_dog.centery = label1Rect.centery
-    # text_rect_dog.center = (200 + ( scrWid//2 -375) // 2, labelYlevel+50)
-    screen.blit(text_surface_dog, text_rect_dog)
-
-    text_rect_cat = text_surface_cat.get_rect()
-    text_rect_cat.centerx = label2Rect.centerx
-    text_rect_cat.centery = label2Rect.centery
-    # text_rect_cat.center = (350 + ( scrWid//2 -100) // 2, labelYlevel+50)
-    screen.blit(text_surface_cat, text_rect_cat)
-
-    text_rect_other = text_surface_other.get_rect()
-    text_rect_other.centerx = label3Rect.centerx
-    text_rect_other.centery = label3Rect.centery
-    # text_rect_other.center = (500 + ( scrWid//2 +175) // 2, labelYlevel+50)
-    screen.blit(text_surface_other, text_rect_other)    
-
-    text_rect_title = text_surface_title.get_rect()
-    text_rect_title.centerx = imgRect.centerx
-    text_rect_title.bottom = imgRect.top - 10
-    screen.blit(text_surface_title, text_rect_title)
-
-
-    #arrows for switching images 
-    # Arrowhead points (pointing right)
-    arrowhead_pointsR = [(imgRect.right + 25, imgRect.centery-10), (imgRect.right + 75, imgRect.centery), (imgRect.right + 25, imgRect.centery+10)]
-    arrRightPt = pygame.draw.polygon(screen, "purple", arrowhead_pointsR)
-    # Arrow shaft (rectangle)
-    arrRightBd = pygame.draw.rect(screen, "purple", (arrRightPt.left - 15, imgRect.centery-5, 15, 10)) # x, y, width, height
-
-    # Arrowhead points (pointing left)
-    arrowhead_pointsL = [(imgRect.left - 25, imgRect.centery-10), (imgRect.left - 75, imgRect.centery), (imgRect.left - 25, imgRect.centery+10)]
-    arrLeftPt = pygame.draw.polygon(screen, "purple", arrowhead_pointsL)
-    # Arrow shaft (rectangle)
-    arrLeftBd = pygame.draw.rect(screen, "purple", (arrLeftPt.right, imgRect.centery-5, 15, 10)) # x, y, width, height
-
-
-    # flip() the display to put your work on screen
-    pygame.display.flip()
-
-    # limits FPS to 60
-    # dt is delta time in seconds since last frame, used for framerate-
-    # independent physics.
-    dt = clock.tick(60) / 1000
-
-pygame.quit()
+# pygame.quit()
