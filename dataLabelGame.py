@@ -9,6 +9,8 @@ pygame.display.set_caption("Data Labeler")
 
 def main():
     run=True
+    clock = pygame.time.Clock()
+    dt = 0
 
     while run:
 #         for event in pygame.event.get():
@@ -125,9 +127,7 @@ if __name__ == "__main__":
 
 ##
 
-clock = pygame.time.Clock()
-run = True
-dt = 0
+
 
 
 # while running:
